@@ -13,7 +13,6 @@ startup_content = '''#!/bin/bash
 #  export PATH="$ENV_PATH/bin:$PATH"
 '''
 startup_file = 'start.sh'
-global_startup = f'{envdir}/{startup_file}'
 global_startup_content = '''#!/bin/bash
 # This file is executed every time a new environment is entered. 
 # $ENV is the environment's name and $ENV_PATH is the environment's path
@@ -21,4 +20,4 @@ export PS1="[$ENV] $PS1"
 '''
 envs_dir = f'envs'
 
-# export ENVMAN_OLDPS1="$PS1" # Please do not remove this unless you know what you are doing - Used to be L20
+# export ENVMAN_OLDPS1="$PS1" # Please do not remove this unless you know what you are doing # - Used to be L19
