@@ -1,6 +1,5 @@
 import os
 import shutil
-from functools import wraps
 from pathlib import Path
 import sh
 
@@ -22,33 +21,6 @@ def init_environment_root(env):
     from . import db
     db.setup(env.env_root)
     db.Base.metadata.create_all()
-
-
-def envdir_exists():
-    return Path(config.envdir).resolve().exists()
-
-
-def calls_if_no_envdir(f_event, *args, **kwargs):
-    def decorator(wrapped):
-        @wraps(wrapped)
-        def wrapper(*pargs, **kws):
-            if envdir_exists():
-                return wrapped(*pargs, **kws)
-            return f_event(*args, **kwargs)
-        return wrapper
-    return decorator
-
-
-def raise_error(error):
-    raise error
-
-
-class EnvmanError(Exception):
-    pass
-
-
-requires_envdir = calls_if_no_envdir(raise_error, EnvmanError('EnvMan directory not initialized!',
-                                                              'Create an environment to initialize it.'))
 
 
 def create_environment(env):
@@ -87,7 +59,6 @@ def assemble_setups(base_env):
     return f'source {main}; {"; ".join(env_start)}'
 
 
-@requires_envdir
 def start_env(env):
     envs = assemble_exports(os.environ)
     setups = assemble_setups(env)
@@ -97,7 +68,6 @@ def start_env(env):
     sh.bash(c=command, _fg=True)
 
 
-@requires_envdir
 def get_env(name, dir):
     db.setup(dir)
     sess = db.Session()
