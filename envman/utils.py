@@ -3,7 +3,6 @@ import shutil
 from functools import wraps
 from pathlib import Path
 import sh
-from sqlalchemy import create_engine
 
 from . import config
 from . import db
